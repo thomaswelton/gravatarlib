@@ -1,9 +1,8 @@
 {
-    "name": "emberlabs/gravatarlib",
+    "name": "thomaswelton/gravatarlib",
     "description": "A lightweight PHP 5.3 OOP library providing easy gravatar integration.",
     "keywords": ["gravatar", "templating", "twig"],
     "type": "library",
-	"homepage": "http://emberlabs.org/",
     "license": "MIT",
     "authors": [{
         "name" : "Sam Thompson",
@@ -12,7 +11,12 @@
     {
         "name" : "Damian Bushong",
         "email" : "damian@emberlabs.org"
-    }],
+    },
+    {
+        "name" : "Thomas Welton",
+        "email" : "thomaswelton@me.com"
+    }
+    ],
     "require": {
         "php": ">=5.3.0"
     },
@@ -21,8 +25,8 @@
     },
     "autoload": {
         "psr-0": {
-            "emberlabs\\GravatarLib\\": ""
+            "thomaswelton\\GravatarLib\\": ""
         }
     },
-    "target-dir" : "emberlabs/GravatarLib"
+    "target-dir" : "thomaswelton/GravatarLib"
 }
