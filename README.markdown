@@ -20,7 +20,7 @@ This library is licensed under the MIT license; you can find a full copy of the 
 We'll assume you're using this git repository as a git submodule, and have it located at `includes/emberlabs/GravatarLib/` according to namespacing rules, for easy autoloading.
 
 ### general examples
-
+Get Gravatar URL:
 ``` php
 	<?php
 	include __DIR__ . '/includes/emberlabs/GravatarLib/Gravatar.php';
@@ -33,7 +33,7 @@ We'll assume you're using this git repository as a git submodule, and have it lo
 	$avatar = $gravatar->buildGravatarURL('someemail@domain.com');
 ```
 
-or
+Get Gravatar profile:
 
 
 ``` php
@@ -41,7 +41,7 @@ or
 	include __DIR__ . '/includes/emberlabs/GravatarLib/Gravatar.php';
 	$gravatar = new \emberlabs\GravatarLib\Gravatar();
 	// example: get array of profile info
-	$gravatar->getGravatarProfile('someemail@domain.com');
+	$gravatar->getGravatarProfile('someemail@domain.com');  //email must be primary email on gravatar account!
 ```
 
 ### setting the default image
