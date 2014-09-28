@@ -276,11 +276,6 @@ class Gravatar
 
 			$http_response = file_get_contents($url);
 			
-			if (!is_array($http_response))
-			{
-				return false;
-			}
-			
 			return unserialize($http_response);
 
 		}catch (\Exception $e){
