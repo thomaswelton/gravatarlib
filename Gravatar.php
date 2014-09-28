@@ -272,9 +272,22 @@ class Gravatar
 	{
 		$url = $this->buildURLBase('profile', $email, $hash_email).'.php';  //add .php to return serrialized php array
 
-		$http_response = file_get_contents($url);
+		try {
 
-		return unserialize($http_response);
+			$http_response = file_get_contents($url);
+			
+			if (!is_array($http_response))
+			{
+				return false;
+			}
+			
+			return unserialize($http_response);
+
+		}catch (\Exception $e){
+
+			return false;
+		
+		}
 	}
 
 	protected function buildURLBase($type, $email, $hash_email)
