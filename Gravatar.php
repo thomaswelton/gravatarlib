@@ -266,7 +266,7 @@ class Gravatar
 	 * Get gavatar profile using primary email address (must be the primary email address!)
 	 * @param  string  $email
 	 * @param  boolean $hash_email  -Does the email need to be hashed? (Use false if email is already hashed)
-	 * @return string           
+	 * @return mixed  returns array on success, returns false if email doesnt have gravatar profile           
 	 */
 	public function getGravatarProfile($email, $hash_email = true)
 	{
