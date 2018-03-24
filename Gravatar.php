@@ -221,10 +221,11 @@ class Gravatar
 	/**
 	 * Build the avatar URL based on the provided email address.
 	 * @param string $email - The email to get the gravatar for.
-	 * @param string $hash_email - Should we hash the $email variable?  (Useful if the email address has a hash stored already)
+     * @param bool $force_hash_email - If set to true, email gets froced to hashed.
+     *                                 Default is a automatic detection if the email needs to be hashed.
 	 * @return string - The XHTML-safe URL to the gravatar.
 	 */
-	public function buildGravatarURL($email, $hash_email = true)
+	public function buildGravatarURL($email, $force_hash_email = false)
 	{
 		// Start building the URL, and deciding if we're doing this via HTTPS or HTTP.
 		if($this->usingSecureImages())
@@ -237,7 +238,7 @@ class Gravatar
 		}
 
 		// Tack the email hash onto the end.
-		if($hash_email == true && !empty($email))
+        if(false === $this->isHashed($email) || true === $force_hash_email)
 		{
 			$url .= $this->getEmailHash($email);
 		}
@@ -297,4 +298,14 @@ class Gravatar
 		// Just an alias.  Makes it easy to use this as a twig asset.
 		return $this->buildGravatarURL($email, $hash_email);
 	}
+
+    /**
+     * Detect if email is already hashed.
+     * @param $email
+     * @return bool
+     */
+    private function isHashed($email)
+    {
+        return (bool)preg_match('/^[a-f0-9]{32}$/i', $email);
+    }
 }
