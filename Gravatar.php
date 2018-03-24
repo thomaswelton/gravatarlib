@@ -238,7 +238,7 @@ class Gravatar
 		}
 
 		// Tack the email hash onto the end.
-        if(false === $this->isHashed($email) || true === $force_hash_email)
+        if(!empty($email) && (false === $this->isHashed($email) || true === $force_hash_email))
 		{
 			$url .= $this->getEmailHash($email);
 		}
