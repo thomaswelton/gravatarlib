@@ -63,8 +63,15 @@ class Gravatar
 	/**#@+
 	 * @var string - URL constants for the avatar images
 	 */
-	const HTTP_URL = 'http://www.gravatar.com/avatar/';
-	const HTTPS_URL = 'https://secure.gravatar.com/avatar/';
+	const AVATAR_HTTP_URL = 'http://www.gravatar.com/avatar/';
+	const AVATAR_HTTPS_URL = 'https://secure.gravatar.com/avatar/';
+	/**#@-*/
+
+	/**#@+
+	 * @var string - URL constants for the gravatar profiles
+	 */
+	const PROFILE_HTTP_URL = 'http://www.gravatar.com/';
+	const PROFILE_HTTPS_URL = 'https://secure.gravatar.com/';
 	/**#@-*/
 
 	/**
@@ -226,29 +233,7 @@ class Gravatar
 	 */
 	public function buildGravatarURL($email, $hash_email = true)
 	{
-		// Start building the URL, and deciding if we're doing this via HTTPS or HTTP.
-		if($this->usingSecureImages())
-		{
-			$url = static::HTTPS_URL;
-		}
-		else
-		{
-			$url = static::HTTP_URL;
-		}
-
-		// Tack the email hash onto the end.
-		if($hash_email == true && !empty($email))
-		{
-			$url .= $this->getEmailHash($email);
-		}
-		elseif(!empty($email))
-		{
-			$url .= $email;
-		}
-		else
-		{
-			$url .= str_repeat('0', 32);
-		}
+		$url = $this->buildURLBase('avatar', $email, $hash_email);
 
 		// Check to see if the param_cache property has been populated yet
 		if($this->param_cache === NULL)
@@ -275,6 +260,72 @@ class Gravatar
 
 		// And we're done.
 		return $url . $this->param_cache . $tail;
+	}
+
+	/**
+	 * Get gavatar profile using primary email address (must be the primary email address!)
+	 * @param  string  $email
+	 * @param  boolean $hash_email  -Does the email need to be hashed? (Use false if email is already hashed)
+	 * @return mixed  returns array on success, returns false if email doesnt have gravatar profile           
+	 */
+	public function getGravatarProfile($email, $hash_email = true)
+	{
+		$url = $this->buildURLBase('profile', $email, $hash_email).'.php';  //add .php to return serrialized php array
+
+		try {
+
+			$http_response = file_get_contents($url);
+			
+			return unserialize($http_response);
+
+		}catch (\Exception $e){
+
+			return false;
+		
+		}
+	}
+
+	protected function buildURLBase($type, $email, $hash_email)
+	{
+		// Start building the URL, and deciding if we're doing this via HTTPS or HTTP.
+		if($this->usingSecureImages())
+		{
+			if ($type == 'profile')
+			{
+				$url = static::PROFILE_HTTPS_URL;
+			}
+			else
+			{
+				$url = static::AVATAR_HTTPS_URL;
+			}
+		}
+		else
+		{
+			if ($type == 'profile')
+			{
+				$url = static::PROFILE_HTTP_URL;
+			}
+			else
+			{
+				$url = static::AVATAR_HTTP_URL;
+			}
+		}
+
+		// Tack the email hash onto the end.
+		if($hash_email == true && !empty($email))
+		{
+			$url .= $this->getEmailHash($email);
+		}
+		elseif(!empty($email))
+		{
+			$url .= $email;
+		}
+		else
+		{
+			$url .= str_repeat('0', 32);
+		}
+
+		return $url;
 	}
 
 	/**
